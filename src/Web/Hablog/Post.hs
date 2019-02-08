@@ -21,6 +21,8 @@ data Post
   , title :: T.Text
   , authors :: [T.Text]
   , tags    :: [T.Text]
+  , leadingSummary :: T.Text
+  , summary :: T.Text
   , content :: H.Html
   }
 
@@ -42,6 +44,8 @@ toPost fileContent =
        <*> M.lookup "title" header
        <*> (map (T.unwords . T.words) . T.split (==',') <$> M.lookup "authors" header)
        <*> (map (T.toLower . T.unwords . T.words) . T.split (==',') <$> M.lookup "tags" header)
+       <*> M.lookup "leading-summary" header
+       <*> M.lookup "summary" header
        <*> pure (createBody $ getContent fileContent)
     where
         header = getHeader fileContent

@@ -5,8 +5,9 @@ module Web.Hablog.Utils where
 import Control.Arrow ((&&&))
 import qualified Data.Text.Lazy as T
 import qualified Data.Map as M
-import qualified Text.Markdown as MD
+import qualified CMarkGFM as GFM
 import qualified Text.Blaze.Html5 as H
+import qualified Text.Blaze.Internal as BI
 
 hd :: [a] -> Maybe a
 hd [] = Nothing
@@ -55,7 +56,20 @@ getContent :: T.Text -> T.Text
 getContent = T.unlines . dropWhile (T.isPrefixOf headerBreaker) . dropWhile (not . T.isPrefixOf headerBreaker) . T.lines
 
 createBody :: T.Text -> H.Html
-createBody = MD.markdown MD.def
+createBody t = BI.Content (BI.PreEscaped $ BI.Text $
+                 GFM.commonmarkToHtml
+                   [ GFM.optSmart ]
+                   [ GFM.extStrikethrough
+                   , GFM.extTable
+                   , GFM.extAutolink
+                   , GFM.extTagfilter
+                   ]
+                   . T.toStrict $ t) ()
+    -- where
+        -- preProcess :: T.Text -> T.Text --for two column article, auto page break
+        -- preProcess = -- insert '\n---\n' into  threshold behind the number of characters and words
+        -- postProcess :: T.Text -> T.Text --for note: syntax, convert '<p>note: *</p>' to '<div class="notes">*</div>'.
+        -- postProcess = 
 
 
 

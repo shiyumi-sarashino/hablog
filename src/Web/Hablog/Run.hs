@@ -5,6 +5,7 @@
 module Web.Hablog.Run where
 
 import           Data.Monoid
+import           Control.Monad.IO.Class (liftIO)
 import           Web.Scotty.Trans
 import           Web.Scotty.TLS (scottyTTLS)
 import           Control.Monad.Trans.Reader (runReaderT)
@@ -47,14 +48,16 @@ runTLS tlsCfg cfg =
 -- | Hablog's router
 router :: Maybe URI -> Hablog ()
 router domain = do
-  get "/" presentHome
+  get "/" $ presentPage "home"
 
   get "/blog" presentBlog
+
+  get "/favicon.ico" $ file "static/favicon.ico"
 
   get (regex "/static/(.*)") $ do
     path <- fmap (drop 1 . T.unpack) (param "0")
     if hasdots path then
-      fail "no dots in path allowed"
+      fail "no dots in path allowed."
       else do
         let mime = Mime.defaultMimeLookup (T.pack path)
         setHeader "content-type" $ TL.fromStrict (T.decodeUtf8 mime)
@@ -68,7 +71,8 @@ router domain = do
 
   notFound $ do
     cfg <- getCfg
-    html $ HR.renderHtml $ errorPage cfg (blogTitle cfg `TL.append` " - 404: not found") "404 - Could not find the page you were looking for."
+    pages <- liftIO getAllPages
+    html $ HR.renderHtml $ errorPage cfg (blogTitle cfg `TL.append` " - 404: not found") "404 - Could not find the page you were looking for." pages
 
   where
     hasdots [] = False
@@ -88,16 +92,16 @@ route domain = do
 
   get "/blog/post/:yyyy/:mm/:dd" $ do
     (yyyy, mm, dd) <- getDate
-    showPostsWhere (eqDate (yyyy, mm, dd))
+    showPostsWhere (eqDate (yyyy, mm, dd)) $ dd <> "/" <> mm <> "/" <> yyyy
 
   get "/blog/post/:yyyy/:mm" $ do
     yyyy <- param "yyyy"
     mm <- param "mm"
-    showPostsWhere (eqYM (yyyy, mm))
+    showPostsWhere (eqYM (yyyy, mm)) $ mm <> "/" <> yyyy
 
   get "/blog/post/:yyyy" $ do
     yyyy <- param "yyyy"
-    showPostsWhere (eqY yyyy)
+    showPostsWhere (eqY yyyy) $ yyyy
 
   get "/blog/tags"
     presentTags

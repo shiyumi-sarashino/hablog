@@ -5,7 +5,7 @@ Description:         blog system with tags
 License:             MIT
 license-file:        LICENSE
 Author:              Gil Mizrahi, Misaki Sarashino
-Maintainer:          sarashino.te@gmail.com
+Maintainer:          misaki@sarashino.io
 Stability:           Experimental
 Category:            Web
 Build-type:          Simple
@@ -33,7 +33,7 @@ library
    ,transformers
    ,bytestring
    ,bifunctors
-   ,markdown
+   ,cmark-gfm
    ,directory
    ,filepath
    ,mime-types
@@ -74,7 +74,7 @@ library
   else
     ghc-options: -Wall -fwarn-tabs -funbox-strict-fields
 
-Executable hablog
+Executable hablog-prida
   hs-source-dirs: app
   main-is: Main.hs
 
@@ -90,6 +90,6 @@ Executable hablog
   if impl(ghc >= 6.12.0)
     other-extensions:
       FlexibleInstances
-    ghc-options: -threaded -Wall -fwarn-tabs -funbox-strict-fields
+    ghc-options: -O2 -threaded -Wall -fwarn-tabs -funbox-strict-fields -fllvm -optlo-O3
   else
     ghc-options: -threaded -Wall -fwarn-tabs -funbox-strict-fields

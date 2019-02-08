@@ -46,11 +46,12 @@ paramsParserInfo :: ParserInfo Params
 paramsParserInfo =
   info (helper <*> (Params <$> config <*> cmd)) $
      fullDesc
-  <> header   "Hablog - A blogging System"
+  <> header   "Hablog-prida - A blogging System"
 
 config :: Parser Config
 config = Config
   <$> fmap pack ttl
+  <*> fmap pack tl
   <*> fmap snd thm
   <*> fmap pack domain
   where
@@ -62,6 +63,15 @@ config = Config
          <> help "Title for the blog"
          <> showDefault
          <> value (unpack defaultTitle)
+        )
+    tl =
+      strOption
+        (long "tagline"
+         <> short 'g'
+         <> metavar "NAME"
+         <> help "Tag line for the blog"
+         <> showDefault
+         <> value (unpack defaultTagLine)
         )
     domain =
       strOption

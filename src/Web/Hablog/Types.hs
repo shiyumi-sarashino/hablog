@@ -14,5 +14,7 @@ import Web.Hablog.Config (Config)
 type Hablog = ScottyT Text (ReaderT Config IO)
 type HablogAction = ActionT Text (ReaderT Config IO)
 
+data Anchor = Time Text | Tag Text | Author Text | Raw
+
 getCfg :: HablogAction Config
 getCfg = lift ask

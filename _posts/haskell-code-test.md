@@ -1,11 +1,15 @@
 title: Haskell syntax highlight test
-authors: Gil
+authors: Gil, test
 route: haskell-code-test
 date: 2014-11-08
 tags: markdown, syntax, haskell, programming
+leading-summary: Let's write some Haskell code
+type: essay
+summary: Let's write some Haskell code
+
 ---
 
-Lets write some Haskell code
+Let's write some Haskell code
 =============================
 
 Alright:

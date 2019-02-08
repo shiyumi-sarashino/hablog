@@ -1,21 +1,21 @@
 route: home
 title: Home
+priority: 1
 
 ---
+# Home
 
 A simple static blog platform with tags. Made with Haskell and Scotty.
 
 Hablog will read posts written in Markdown from the `_posts` folder.
 
-License
-=======
+## License
 
 Hablog is licensed under MIT license. This means the Haskell source files in the src directory.
 Highlight.js related content is not a part of Hablog and is not licensed by it.
 
 
-Installation
-============
+## Installation
 
 ```sh
 git clone https://github.com/soupi/hablog
@@ -24,8 +24,7 @@ stack build
 ```
 
 
-How to write a new post?
-========================
+## How to write a new post?
 
 1. All posts must go under the `/_posts/` directory
 1. All pages must go under the `/_pages/` directory

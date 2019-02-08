@@ -16,6 +16,7 @@ data Theme = Theme
 -- | Configuration for Hablog
 data Config = Config
   { blogTitle  :: Text
+  , blogTagLine  :: Text
   , blogTheme  :: Theme
   , blogDomain :: Text
   }
@@ -33,13 +34,17 @@ data TLSConfig = TLSConfig
 defaultConfig :: Config
 defaultConfig = Config
   { blogTitle = defaultTitle
+  , blogTagLine = defaultTagLine
   , blogTheme = snd defaultTheme
   , blogDomain = defaultDomain
   }
 
 -- | "Hablog"
 defaultTitle :: Text
-defaultTitle = "Hablog"
+defaultTitle = "Hablog-prida"
+
+defaultTagLine :: Text
+defaultTagLine = "fork of Hablog"
 
 defaultDomain :: Text
 defaultDomain = "localhost"
@@ -54,7 +59,7 @@ defaultTLSPort = 443
 
 -- | The default is the dark theme
 defaultTheme :: (String, Theme)
-defaultTheme = ("dark", darkTheme)
+defaultTheme = ("prida", pridaTheme)
 
 darkTheme :: Theme
 darkTheme = Theme "/static/css/dark.css" "/static/highlight/styles/hybrid.css"
@@ -62,9 +67,12 @@ darkTheme = Theme "/static/css/dark.css" "/static/highlight/styles/hybrid.css"
 lightTheme :: Theme
 lightTheme  = Theme "/static/css/light.css" "/static/highlight/styles/docco.css"
 
+pridaTheme :: Theme
+pridaTheme  = Theme "/static/css/prida.css" "/static/highlight/styles/docco.css"
 
 themes :: [(String, Theme)]
 themes =
   [("dark",  darkTheme)
   ,("light", lightTheme)
+  ,("prida", pridaTheme)
   ]
